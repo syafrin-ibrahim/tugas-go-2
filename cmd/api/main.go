@@ -20,8 +20,8 @@ func main() {
 	qsService := question.NewQuestionService(db)
 	ansService := answer.NewAnswerService(db)
 	r.GET("/exercise/:id", middleware.Auth(userService), xrService.GetExercise)
-	r.POST("/exercise", xrService.CreteExercise)
-	r.GET("/exercise", xrService.GetExerciseAll)
+	r.POST("/exercise", middleware.Auth(userService), xrService.CreteExercise)
+	r.GET("/exercise", middleware.Auth(userService), xrService.GetExerciseAll)
 	r.GET("/exercise/:id/score", middleware.Auth(userService), xrService.GetUserScore)
 	r.POST("/question", middleware.Auth(userService), qsService.CreateQuestion)
 	r.POST("/answer", middleware.Auth(userService), ansService.CreateAnswer)
@@ -29,6 +29,9 @@ func main() {
 	r.POST("/login", userService.Login)
 	r.Run(":8000")
 }
+
+//contohmicroservices
+//https://github.com/ahsanulks/user_service
 
 // func handlerGetExercise(ctx *gin.Context) {
 
