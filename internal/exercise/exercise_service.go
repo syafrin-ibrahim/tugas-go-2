@@ -24,6 +24,7 @@ func NewExerciseService(database *gorm.DB) *ExerciseService {
 
 func (ex ExerciseService) GetExerciseAll(ctx *gin.Context) {
 	var exercise []domain.Exercise
+
 	err := ex.db.Find(&exercise).Error
 	if err != nil {
 		ctx.JSON(400, gin.H{
@@ -31,7 +32,20 @@ func (ex ExerciseService) GetExerciseAll(ctx *gin.Context) {
 		})
 		return
 	}
-	ctx.JSON(http.StatusOK, exercise)
+	var responses []domain.ExerciseResponse
+	for _, exer := range exercise {
+		exerciseResponse := domain.ExerciseResponse{
+			Title:       exer.Title,
+			Description: exer.Description,
+		}
+
+		responses = append(responses, exerciseResponse)
+
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"data exercise ": responses,
+	})
 
 }
 
@@ -69,7 +83,7 @@ func (ex ExerciseService) CreteExercise(ctx *gin.Context) {
 	}
 
 	exerciseResponse := domain.ExerciseResponse{
-		ID:          newExercise.ID,
+
 		Title:       newExercise.Title,
 		Description: newExercise.Description,
 	}
@@ -96,6 +110,7 @@ func (ex ExerciseService) GetExercise(ctx *gin.Context) {
 		})
 		return
 	}
+
 	ctx.JSON(http.StatusOK, exercise)
 
 }

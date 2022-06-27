@@ -13,7 +13,6 @@ type ExerciseRequest struct {
 }
 
 type ExerciseResponse struct {
-	ID          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
